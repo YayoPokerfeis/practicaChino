@@ -20,4 +20,10 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 });
+//aca es get y en el java script es post
+Route::post('/loginData', function () {
+    dd('entraste a loginData');
+});
+
+
 
