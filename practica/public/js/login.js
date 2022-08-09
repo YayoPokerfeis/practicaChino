@@ -4,6 +4,7 @@ console.log();
 
 
 $( "#buttonLogin" ).click(function() {
+
     guardarDatos();
 });
 
@@ -16,42 +17,61 @@ var guardarDatos = function(){
     pass = $( "#pass" ).val();
 
         //creamos objeto
-   data = {
+  var data = {
     'user' : user,
     'pass' : pass,
    };
-//busca ese error asi como le puse en google ya estamos cerca. ya me voy a comer xd oki oki provechito inge /// aca en la pagina 
-
-   //mira como voy a debugear los datos asi solitos y despues en objetos el data es el objeto y dentro le meti user y pass 
-   //aqui voy a debugear
-
-   console.log('usuario:' + user +'   '  + pass);
    console.log(data);
-
-   // ya viste que el objeto esta entre llaves y cuando lo abro trae esos datos y los de arriba viene el puro string 
-   // pero eso que hace de diferencia?
-   //los dos datos los encapsulamos en un objeto eso quiere decir que podemos tener un opbjeto con infinidad de datos o metodos en este caso son datos como el nombre y su contraseña
-   //si lo dejabamos asi tendriamos que hacer una peticion para cada dato y las peticiones consumen recursos y cada peticion vuelve lento el sistema mas sin en cambio
-   //una  no lo alenta .
-   // las peticiones son por http ya sea get o post  get es por aammm nose como explicarlo creo como tal el dato y post por la utl ahorita vemos las diferencias.
-
-
-   // esa es la paeticion ajax esta va mandar los datos por la URL mediante HTTP osea por internet y lo va recibir tu servidor. mediante la URL
-   //AHI ENFRENTE VIENE QUE PIDE CADA COSA
-   //INTENTAREMOS PRIMERO CON POST PARA VER COMO SE ENVIA 
    $.ajax({
-    url: "{{ url('url') }}",
-    data: {
-        "_token": $("meta[name='csrf-token']").attr("content")
+    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+    type: 'post',
+    dataType: 'json',
+    url: '/loginData',// aqui manda a pedir la direccion al back 
+    data: data,  //aqui mandamos los datos del front al back
+    success: function (data) {// aqui resivimos respuesta del back
+        console.log(data.status);
+       if(data.status === true){// data es el objeto que te voy a seleccionar del back
+        alert('el usuario existe');
+       }else{
+        alert('el usuario no existe');
+        //algo esta mal xd , no esta entrando al success
+       }//pues te va tocar esta parte ya solo es buscar porque no funciona ya esta todo bien. oki 
+       // para que funcione te tiene que arrojar una alerta como esta 
+       //obviamente cuando exista la primera y cuando no la segunda. estoy seguro que solo es algo mas escrito
+    },//bueno ahi te dejo te me cuidas vaava graxxx <3 hoy lo terminas eehhh espero tu mensaje 
+    //espero terminarlo antes de las 7 vavavava bais
+    beforeSend: function () {
+        console.log('bloqueo botones');
     },
-    dataType: "json",
-    method: "POST",
-    success: function(response) {
-        //Acciones si success
+    complete: function () {
+        console.log('desbloqueo botones');
     },
-    error: function () {
-        //Acciones si error
+    success: function (response) {
+       console.log('ok!');
+    },
+    error: function (jqXHR) {
+        console.log('boo!');
     }
+
+
+
+
+
+    //url: "{{ url('url') }}",
+    //data: {
+        //"_token": $("meta[name='csrf-token']").attr("content")
+    //},
+    //dataType: "json",
+    //method: "POST",
+    //success: function(response) {
+        //Acciones si success
+    //},
+    //error: function () {
+        //Acciones si error
+    //}
+
+
+
 
     //type: 'POST',  // Envío con método POST
     //headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
